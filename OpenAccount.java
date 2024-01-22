@@ -21,7 +21,7 @@ public class OpenAccount {
         return cardNumBuilder.toString();
     }
 
-    public void createAccount(){
+    public void createAccount(BankDatabase bankDatabase){
         System.out.println("Welcome to Mjiyakho Banking\n");
 
         System.out.println("Enter your fullname");
@@ -31,16 +31,12 @@ public class OpenAccount {
         String cardNumber = generateCardNumber();
  
 
-        BankDatabase bankDatabase = new BankDatabase();
+      
         bankDatabase.addClient(new ClientAccount(fullName, cardNumber, balance));
 
-        System.out.println("Account created successfully");
+        System.out.println("Account created successfully\nYour card number is "+cardNumber+"\n\n");
 
-        scanner.close();
+      
     }
 
-    public static void main(String[] args) {
-        OpenAccount openAccount = new OpenAccount();
-        openAccount.createAccount();   
-    }
 }
