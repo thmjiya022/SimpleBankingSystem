@@ -3,40 +3,72 @@ import java.util.Scanner;
 
 public class OpenAccount {
 
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+    private Random random;
+    private int balance;
+
+    public OpenAccount(){
+        this.scanner = new Scanner(System.in);
+        this.random = new Random();
+        this.balance = 0;
+    }
 
     public String generateCardNumber(){
-        
-        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder cardNumBuilder = new StringBuilder();
+        cardNumBuilder.append(1 + this.random.nextInt(9));
 
-        Random random = new Random();
-
-        for(int i = 0; i < 3; i++){
-            int randomIndex = random.nextInt(characters.length());
-            char randomChar = characters.charAt(randomIndex);
-            cardNumBuilder.append(randomChar);
+        for(int i = 0; i < 15; i++){
+            cardNumBuilder.append(this.random.nextInt(10));
         }
-
         return cardNumBuilder.toString();
     }
 
-    public void createAccount(BankDatabase bankDatabase){
-        System.out.println("Welcome to Mjiyakho Banking\n");
+    public String generateCVV(){
+        StringBuilder cvvBuilder = new StringBuilder();
+        for(int i = 0; i < 3; i++){
+            cvvBuilder.append(this.random.nextInt(10));
+        }
+        return cvvBuilder.toString();
+    }
 
-        System.out.println("Enter your fullname");
-        String fullName = scanner.nextLine();
-        int balance = 0;
+    public String getFullName(){
+        while(true){
+            try{
+                System.out.println("Enter your full name");
+                String userInput = this.scanner.nextLine();
 
-        String cardNumber = generateCardNumber();
+                if(userInput.matches("^[a-zA-Z]+\\s[a-zA-Z]+$")){
+                    return userInput;
+                }else{
+                    System.out.println("Invalid full name, enter your name and surname.");
+                }
+            }catch(Exception e){
+                System.out.println("An error occurred: "+ e.getMessage());
+            }
+        }
+    }
+
+    public String getId(){
  
+        while(true){
+            System.out.println("Enter your ID");
+            String clientId = this.scanner.nextLine();
 
-      
-        bankDatabase.addClient(new ClientAccount(fullName, cardNumber, balance));
+            if(clientId.length() == 13){
+                return clientId;
+            }
+        }
+    }
 
-        System.out.println("Account created successfully\nYour card number is "+cardNumber+"\n\n");
+    public ClientAccount createAccount(){
+        System.out.println("Welcome to Mjiyakho Banking\n");
+        String fullName = getFullName();
+        String clientID = getId();
+        String cvvNumber = generateCVV();
+        String cardNumber = generateCardNumber();
 
-      
+ 
+        return new ClientAccount(fullName, cardNumber, balance);
     }
 
 }

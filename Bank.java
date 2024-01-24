@@ -3,17 +3,19 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Bank {
-    private Scanner scanner = new Scanner(System.in);
-    BankDatabase bankDatabase = new BankDatabase();
+    private Scanner scanner;
+    private BankDatabase bankDatabase;
+
+    public Bank(){
+        this.scanner = new Scanner(System.in);
+        this.bankDatabase = new BankDatabase();
+    }
 
     public void displayMessage(){
         System.out.println("-------------------------------------\n");
         System.out.println("------Welcome To Mjiyakho Bank-------\n");
-        System.out.println("         How we can help you\n"+
-                            "         1.Open an account\n"+
-                            "         2.Check balance\n"+
-                            "         3.Deposite cash\n"+
-                            "         4.Withdraw cash");
+        System.out.println("          1.Open an account\n"+
+                           "          2.Log in");
         
         System.out.println("-------------------------------------");
     }
@@ -21,51 +23,28 @@ public class Bank {
 
     private void openAccount(){
         OpenAccount openAccount = new OpenAccount();
-        openAccount.createAccount(bankDatabase);
+        bankDatabase.addClient(openAccount.createAccount());
+
+        System.out.println("Account created successfully\n");
     }
 
-    public void checkBalance(List<ClientAccount> listClientsAccount, String cardNumber){
-        for(ClientAccount clientAccount: listClientsAccount){
-            if(clientAccount.getCardNumber().equals(cardNumber)){
-                System.out.println("Your balance is "+ clientAccount.getBalance());
-                return;
-            }
-        }
-        System.out.println("Invalid card number");
+    private void logIn(){
+
     }
 
-    public void runBank() {
-        while (true) {
-            displayMessage();
-            System.out.print("Enter your choice: ");
+    public void checkBalance(String cardNumber){
+
+    }
+
+    public void runBank(){
+        displayMessage();
+        
+        String option = this.scanner.nextLine();
+        switch (option) {
+            case "1" -> openAccount();
+            case "2" -> logIn();
             
-            try {
-                String option = scanner.nextLine();
-
-                switch (option) {
-                    case "1":
-                        openAccount();
-                        break;
-                    case "2":
-             
-                        System.out.print("Enter your card number: ");
-                        String cardNumber = scanner.nextLine();
-                        checkBalance(bankDatabase.getListClientAccounts(), cardNumber);
-                        break;
-                    case "3":
-                        // Implement deposit cash
-                        break;
-                    case "4":
-                        // Implement withdraw cash
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please try again.");
-                        break;
-                }
-            } catch (NoSuchElementException e) {
-                // Handle the exception, e.g., display an error message
-                System.out.println("Error reading user input. Please try again.");
-            }
+            default -> System.out.println("Invalid option");
         }
     }
 
