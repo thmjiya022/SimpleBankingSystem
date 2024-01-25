@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -46,6 +47,14 @@ public class OpenAccount {
                 System.out.println("An error occurred: "+ e.getMessage());
             }
         }
+    }
+
+    public String getUsername(){
+        System.out.println("\nUsername: ");
+        String username = this.scanner.nextLine();
+
+
+        return username;
     }
 
     public String getId(){
